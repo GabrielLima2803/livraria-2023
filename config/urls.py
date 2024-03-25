@@ -5,11 +5,13 @@ from django.conf.urls.static import static
 
 from rest_framework.routers import DefaultRouter
 
-from core.views import AutorViewSet, CategoriaViewSet, EditoraViewSet, LivroViewSet
+from core.views import AutorViewSet, CategoriaViewSet, EditoraViewSet, LivroViewSet, CompraViewSet
 
 from usuario.router import router as usuario_router
 
 from uploader.router import router as uploader_router
+
+from usuario.views import UsuarioViewSet
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -28,6 +30,8 @@ router.register(r"autores", AutorViewSet, basename="autores")
 router.register(r"categorias", CategoriaViewSet, basename="categorias")
 router.register(r"editoras", EditoraViewSet, basename="editoras")
 router.register(r"livros", LivroViewSet, basename="livros")
+router.register(r"users", UsuarioViewSet, basename="users")
+router.register(r"compras", CompraViewSet, basename="compras")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
