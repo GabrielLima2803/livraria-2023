@@ -3,11 +3,19 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .managers import CustomUserManager
+from uploader.models import Image
 
 
 class Usuario(AbstractUser):
     username = None
     email = models.EmailField(_("e-mail address"), unique=True)
+    foto = models.ForeignKey(
+        Image,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        default=None,
+    )
     cpf = models.CharField(_("CPF"), max_length=11, blank=True, null=True)
     telefone = models.CharField(_("Phone"), max_length=11, blank=True, null=True)
     data_nascimento = models.DateField(
