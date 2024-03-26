@@ -19,6 +19,14 @@ class Compra(models.Model):
         #     total += item.livro.preco * item.quantidade
         # return total
         return sum(item.livro.preco * item.quantidade for item in self.itens.all())
+    def update(self, instance, validated_data):
+        itens = validated_data.pop("itens")
+        if itens:
+            instance.itens.all().delete()
+            for item in itens:
+                ItensCompra.objects.create(compra=instance, **item)
+        instance.save()
+        return instance
     
     def __str__(self):
         return f"{self.usuario.email} - {self.status}"
