@@ -7,8 +7,13 @@ from uploader.models import Image
 
 
 class Usuario(AbstractUser):
+    class TipoUsuario(models.IntegerChoices):
+        CLIENTE = 1, "Cliente"
+        VENDEDOR = 2, "Vendedor"
+        GERENTE = 3, "Gerente"
     username = None
     email = models.EmailField(_("e-mail address"), unique=True)
+    tipo_usuario = models.IntegerField(_("User Type"), choices=TipoUsuario.choices, default=TipoUsuario.CLIENTE)
     foto = models.ForeignKey(
         Image,
         on_delete=models.SET_NULL,
