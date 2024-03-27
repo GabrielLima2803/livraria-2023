@@ -1,5 +1,6 @@
 from django.db import models
 
+
 from usuario.models import Usuario
 from core.models import Livro
 
@@ -11,7 +12,8 @@ class Compra(models.Model):
         ENTREGUE = 4, "Entregue"
 
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name="compras")
-    status = models.IntegerField(choices=StatusCompra.choices,  default=StatusCompra.CARRINHO)
+    status = models.IntegerField(choices=StatusCompra.choices, default=StatusCompra.CARRINHO)
+    data =  models.DateTimeField(auto_now_add = True)
     @property
     def total(self):
         return sum(item.preco_item * item.quantidade for item in self.itens.all())
