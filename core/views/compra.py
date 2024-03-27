@@ -2,6 +2,8 @@ from rest_framework.viewsets import ModelViewSet
 
 from django_filters.rest_framework import DjangoFilterBackend
 
+from rest_framework.filters import SearchFilter
+
 from core.models import Compra
 
 from core.serializers import CompraSerializer, CriarEditarCompraSerializer
@@ -9,8 +11,9 @@ from core.serializers import CompraSerializer, CriarEditarCompraSerializer
 class CompraViewSet(ModelViewSet):
     queryset = Compra.objects.all()
     serializer_class = CompraSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["usuario_username"]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ["usuario__email"]
+    search_fields = ["usuario__username"]
 
 
     def get_serializer_class(self):
