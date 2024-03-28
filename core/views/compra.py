@@ -4,6 +4,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.filters import SearchFilter, OrderingFilter
 
+from usuario.models import Usuario
+
 from core.models import Compra
 
 from core.serializers import CompraSerializer, CriarEditarCompraSerializer
@@ -13,9 +15,9 @@ class CompraViewSet(ModelViewSet):
     serializer_class = CompraSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["usuario", "status", "data"]
-    search_fields = ["usuario__username"]
+    search_fields = ["usuario__email"]
     ordering_fields = ["usuario", "status", "data"]
-    ordering = ["usuario__username"]
+    ordering = ["usuario__email"]
 
 
 
@@ -27,6 +29,8 @@ class CompraViewSet(ModelViewSet):
     def get_queryset(self):
         usuario = self.request.user
         if usuario.is_authenticated: 
+            if usuario.tipo == Usuario.TipoUsuario.GERENTE:
+                return Compra.objects.all()
             if usuario.is_superuser:
                 return Compra.objects.all()
             if usuario.groups.filter(name="Administradores").exists():
